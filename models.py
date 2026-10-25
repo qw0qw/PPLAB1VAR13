@@ -117,3 +117,19 @@ class Lesson:
 
     def __str__(self) -> str:
         return f"{self.title} ({self.duration_min} мин)"
+
+
+class Module:
+    """Модуль курса: набор уроков."""
+
+    def __init__(self, module_id: int, title: str) -> None:
+        self.id = module_id
+        self.title = require_text(title, "title")
+        self.lessons: list[Lesson] = []
+
+    def add_lesson(self, lesson: Lesson) -> None:
+        self.lessons.append(lesson)
+
+    def get_duration(self) -> int:
+        """Суммарная длительность уроков (в минутах)."""
+        return sum(lesson.duration_min for lesson in self.lessons)
