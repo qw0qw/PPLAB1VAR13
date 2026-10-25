@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='utf-8'?>
+<platform>
+  <teachers type="list">
+    <item>
+      <id type="int">1</id>
+      <name type="str">Иван Петров</name>
+      <email type="str">ivan.petrov@test.ru</email>
+      <department type="str">ИИТ</department>
+    </item>
+  </teachers>
+  <students type="list">
+    <item>
+      <id type="int">1</id>
+      <name type="str">Вася Пупкин</name>
+      <email type="str">vasyaP@zmail.com</email>
+      <group type="str">11</group>
+    </item>
+    <item>
+      <id type="int">2</id>
+      <name type="str">Джейсон Стэтхэм</name>
+      <email type="str">jsonSt@mail.ru</email>
+      <group type="str">И112</group>
+    </item>
+    <item>
+      <id type="int">3</id>
+      <name type="str">Петр Иванов</name>
+      <email type="str">pi@yandex.by</email>
+      <group type="str">be11</group>
+    </item>
+  </students>
+  <categories type="list">
+    <item>
+      <id type="int">1</id>
+      <name type="str">Начертательная Геометрия</name>
+    </item>
+  </categories>
+  <courses type="list">
+    <item>
+      <id type="int">1</id>
+      <title type="str">begginer начерт</title>
+      <price type="float">1500.0</price>
+      <teacher_id type="int">1</teacher_id>
+      <category_id type="int">1</category_id>
+      <modules type="list">
+        <item>
+          <id type="int">1</id>
+          <title type="str">тест</title>
+          <lessons type="list">
+            <item>
+              <id type="int">1</id>
+              <title type="str">ещё тест</title>
+              <duration_min type="int">60</duration_min>
+            </item>
+          </lessons>
+        </item>
+        <item>
+          <id type="int">2</id>
+          <title type="str">тест2</title>
+          <lessons type="list">
+            <item>
+              <id type="int">1</id>
+              <title type="str">тест3</title>
+              <duration_min type="int">58</duration_min>
+            </item>
+          </lessons>
+        </item>
+      </modules>
+    </item>
+    <item>
+      <id type="int">2</id>
+      <title type="str">Курс2</title>
+      <price type="float">999.0</price>
+      <teacher_id type="int">1</teacher_id>
+      <category_id type="int">1</category_id>
+      <modules type="list" />
+    </item>
+  </courses>
+  <assignments type="list">
+    <item>
+      <id type="int">1</id>
+      <title type="str">дз1</title>
+      <max_score type="int">10</max_score>
+    </item>
+  </assignments>
+  <enrollments type="list">
+    <item>
+      <id type="int">1</id>
+      <student_id type="int">1</student_id>
+      <course_id type="int">1</course_id>
+      <progress type="float">100.0</progress>
+    </item>
+    <item>
+      <id type="int">2</id>
+      <student_id type="int">2</student_id>
+      <course_id type="int">1</course_id>
+      <progress type="float">40.0</progress>
+    </item>
+  </enrollments>
+  <submissions type="list">
+    <item>
+      <id type="int">1</id>
+      <student_id type="int">1</student_id>
+      <assignment_id type="int">1</assignment_id>
+      <text type="str">решено</text>
+      <score type="int">10</score>
+    </item>
+    <item>
+      <id type="int">2</id>
+      <student_id type="int">1</student_id>
+      <assignment_id type="int">1</assignment_id>
+      <text type="str">тттт</text>
+      <score type="int">5</score>
+    </item>
+    <item>
+      <id type="int">3</id>
+      <student_id type="int">2</student_id>
+      <assignment_id type="int">1</assignment_id>
+      <text type="str">Не решено</text>
+      <score type="none" />
+    </item>
+  </submissions>
+  <certificates type="list">
+    <item>
+      <id type="int">1</id>
+      <enrollment_id type="int">1</enrollment_id>
+    </item>
+  </certificates>
+</platform>
