@@ -69,3 +69,23 @@ class Student(User):
 
     def __str__(self) -> str:
         return f"{super().__str__()} ({self.group})"
+
+
+class Teacher(User):
+    """Преподаватель: ведёт курсы и оценивает работы."""
+
+    def __init__(self, user_id: int, name: str, email: str,
+                 department: str) -> None:
+        super().__init__(user_id, name, email)
+        self.department = require_text(department, "department")
+        self.courses: list[Course] = []
+
+    def grade(self, submission: Submission, score: int) -> None:
+        """Выставляет оценку (проверку делает сама работа)."""
+        submission.score = score
+
+    def get_role(self) -> str:
+        return "Преподаватель"
+
+    def __str__(self) -> str:
+        return f"{super().__str__()} ({self.department})"
