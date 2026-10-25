@@ -198,3 +198,46 @@ class Enrollment:
     def __str__(self) -> str:
         return (f"Запись #{self.id}: {self.student.name} -> "
                 f"{self.course.title}, {self.progress:.0f}%")
+
+
+
+class Assignment:
+    """Задание."""
+
+    def __init__(self, assignment_id: int, title: str,
+                 max_score: int) -> None:
+        if max_score <= 0:
+            raise ValidationError("Максимальный балл должен быть > 0")
+        self.id = assignment_id
+        self.title = require_text(title, "title")
+        self.max_score = max_score
+
+    def __str__(self) -> str:
+        return f"Задание #{self.id}: {self.title} (макс. {self.max_score})"
+
+
+class Submission:
+    """Работа студента по заданию."""
+
+    def __init__(self, submission_id: int, student: Student,
+                 assignment: Assignment, text: str) -> None:
+        self.id = submission_id
+        self.student = student
+        self.assignment = assignment
+        self.text = require_text(text, "text")
+        self._score: int | None = None    # пока не оценена
+
+    @property
+    def score(self) -> int | None:
+        return self._score
+
+    @score.setter
+    def score(self, value: int) -> None:
+        if not 0 <= value <= self.assignment.max_score:
+            raise ValidationError(
+                f"Оценка должна быть от 0 до {self.assignment.max_score}")
+        self._score = value
+
+    def __str__(self) -> str:
+        return (f"Работа #{self.id}: {self.student.name}, "
+                f"{self.assignment.title}, оценка: {self.score}")
