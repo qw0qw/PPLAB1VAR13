@@ -153,3 +153,64 @@ class JsonStorage(Storage):
             raise StorageError(f"Не удалось прочитать файл: {error}") \
                 from error
         return _restore(data)
+
+
+# JSON готов, дальше идёт XML хранилищею
+def _to_xml(parent: ET.Element, tag: str, value: Any) -> None:
+    """Рекурсивно записывает значение в XML (тип хранится в атрибуте)."""
+    element = ET.SubElement(parent, tag)
+    if isinstance(value, dict):
+        for key, item in value.items():
+            _to_xml(element, key, item)
+    elif isinstance(value, list):
+        element.set("type", "list")
+        for item in value:
+            _to_xml(element, "item", item)
+    elif value is None:
+        element.set("type", "none")
+    else:
+        element.set("type", type(value).__name__)
+        element.text = str(value)
+
+
+def _from_xml(element: ET.Element) -> Any:
+    """Обратное преобразование XML-элемента в значение Python."""
+    kind = element.get("type")
+    if kind == "list":
+        return [_from_xml(child) for child in element]
+    if kind == "none":
+        return None
+    if kind is None:    # элемент без типа - словарь
+        return {child.tag: _from_xml(child) for child in element}
+    converters = {"int": int, "float": float, "str": str}
+    return converters[kind](element.text or "")
+
+
+class XmlStorage(Storage):
+    """Хранилище в формате XML."""
+
+    def save(self, platform: LearningPlatform) -> None:
+        root = ET.Element("platform")
+        for key, value in platform_to_dict(platform).items():
+            _to_xml(root, key, value)
+        tree = ET.ElementTree(root)
+        ET.indent(tree)
+        try:
+            tree.write(self._path, encoding="utf-8", xml_declaration=True)
+        except OSError as error:
+            raise StorageError(f"Не удалось записать файл: {error}") \
+                from error
+
+    def load(self) -> LearningPlatform:
+        try:
+            root = ET.parse(self._path).getroot()
+        except FileNotFoundError:
+            raise StorageError(f"Файл {self._path} не найден") from None
+        except (OSError, ET.ParseError) as error:
+            raise StorageError(f"Не удалось прочитать файл: {error}") \
+                from error
+        try:
+            data = {child.tag: _from_xml(child) for child in root}
+        except (KeyError, ValueError) as error:
+            raise StorageError(f"Неверный формат XML: {error!r}") from error
+        return _restore(data)
