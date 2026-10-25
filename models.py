@@ -89,3 +89,31 @@ class Teacher(User):
 
     def __str__(self) -> str:
         return f"{super().__str__()} ({self.department})"
+
+
+#Курсы
+class Category:
+    """Категория курсов."""
+
+    def __init__(self, category_id: int, name: str) -> None:
+        self.id = category_id
+        self.name = require_text(name, "name")
+        self.courses: list[Course] = []
+
+    def __str__(self) -> str:
+        return f"Категория #{self.id}: {self.name}"
+
+
+class Lesson:
+    """Урок."""
+
+    def __init__(self, lesson_id: int, title: str,
+                 duration_min: int) -> None:
+        if duration_min <= 0:
+            raise ValidationError("Длительность урока должна быть > 0")
+        self.id = lesson_id
+        self.title = require_text(title, "title")
+        self.duration_min = duration_min
+
+    def __str__(self) -> str:
+        return f"{self.title} ({self.duration_min} мин)"
