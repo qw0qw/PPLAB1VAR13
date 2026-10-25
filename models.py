@@ -133,3 +133,68 @@ class Module:
     def get_duration(self) -> int:
         """Суммарная длительность уроков (в минутах)."""
         return sum(lesson.duration_min for lesson in self.lessons)
+
+
+
+class Course:
+    """Курс принадлежит преподавателю и категории, состоит из модулей."""
+
+    def __init__(self, course_id: int, title: str, price: float,
+                 teacher: Teacher, category: Category) -> None:
+        self.id = course_id
+        self.title = require_text(title, "title")
+        self.price = price    # идёт через setter, значит, с проверкой
+        self.teacher = teacher
+        self.category = category
+        self.modules: list[Module] = []
+
+    @property
+    def price(self) -> float:
+        return self._price
+
+    @price.setter
+    def price(self, value: float) -> None:
+        if value < 0:
+            raise ValidationError("Цена не может быть отрицательной")
+        self._price = value
+
+    def add_module(self, module: Module) -> None:
+        self.modules.append(module)
+
+    def get_duration(self) -> int:
+        """Суммарная длительность курса (в минутах)."""
+        return sum(module.get_duration() for module in self.modules)
+
+    def __str__(self) -> str:
+        return (f"Курс #{self.id}: {self.title}, {self.price:.0f} руб., "
+                f"{self.get_duration()} мин, {self.teacher.name}")
+
+
+
+#Обучение и проверка работ
+class Enrollment:
+    """Запись студента на курс с прогрессом."""
+
+    def __init__(self, enrollment_id: int, student: Student,
+                 course: Course) -> None:
+        self.id = enrollment_id
+        self.student = student
+        self.course = course
+        self.progress = 0.0    # идёт через setter, значит, с проверкой
+
+    @property
+    def progress(self) -> float:
+        return self._progress
+
+    @progress.setter
+    def progress(self, value: float) -> None:
+        if not 0 <= value <= 100:
+            raise ValidationError("Прогресс должен быть от 0 до 100")
+        self._progress = value
+
+    def is_completed(self) -> bool:
+        return self.progress >= 100
+
+    def __str__(self) -> str:
+        return (f"Запись #{self.id}: {self.student.name} -> "
+                f"{self.course.title}, {self.progress:.0f}%")
