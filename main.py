@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Callable
 
-from exceptions import LearningError, ValidationError
+from exceptions.learning_error import LearningError
+from exceptions.validation_error import ValidationError
 from learning_platform import LearningPlatform
 from models import (
     Assignment,

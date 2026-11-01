@@ -74,6 +74,14 @@
       <category_id type="int">1</category_id>
       <modules type="list" />
     </item>
+    <item>
+      <id type="int">3</id>
+      <title type="str">qw</title>
+      <price type="float">1222.0</price>
+      <teacher_id type="int">1</teacher_id>
+      <category_id type="int">1</category_id>
+      <modules type="list" />
+    </item>
   </courses>
   <assignments type="list">
     <item>
